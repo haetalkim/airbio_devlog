@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AirBioCivic — Build Log</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300;1,9..144,400&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#111;--ink2:#333;--muted:#777;
+  --sep:rgba(0,0,0,0.08);
+  --bg:#fafaf8;--surface:#fff;--surface2:#f5f5f2;
+  --orange:#ff5a00;
+  --green:#1a7a3a;--green-bg:#edfbf1;
+  --blue:#1660d4;--blue-bg:#eef4ff;
+  --sans:'Sora',-apple-system,sans-serif;
+  --serif:'Fraunces',Georgia,serif;
+  --r:10px;
+}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;}
+
+/* NAV */
+nav{
+  background:var(--surface);border-bottom:1px solid var(--sep);
+  padding:0 40px;height:50px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+}
+.nav-back{font-size:12px;color:var(--muted);text-decoration:none;}
+.nav-back:hover{color:var(--orange);}
+.nav-title{font-size:12px;font-weight:500;color:var(--ink2);}
+
+/* HERO */
+.hero{max-width:740px;margin:0 auto;padding:64px 40px 48px;border-bottom:1px solid var(--sep);}
+.hero-tag{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--orange);margin-bottom:12px;}
+.hero-title{font-size:38px;font-weight:700;letter-spacing:-0.02em;line-height:1.1;color:var(--ink);margin-bottom:14px;}
+.hero-desc{font-size:14px;color:var(--muted);line-height:1.75;font-weight:300;max-width:540px;margin-bottom:24px;}
+.hero-meta{display:flex;gap:20px;flex-wrap:wrap;}
+.hmeta{font-size:11px;color:var(--muted);}
+.hmeta strong{color:var(--ink2);font-weight:500;}
+
+/* TAB SWITCHER */
+.tab-wrap{max-width:740px;margin:0 auto;padding:0 40px;}
+.tab-bar{
+  display:flex;gap:0;
+  border:1px solid var(--sep);border-radius:99px;
+  background:var(--surface2);
+  overflow:hidden;
+  margin:36px 0 0;
+  width:fit-content;
+}
+.tab-btn{
+  font-size:12px;font-weight:600;
+  padding:9px 24px;border:none;background:transparent;
+  color:var(--muted);cursor:pointer;
+  border-radius:99px;
+  transition:all 0.18s;
+  letter-spacing:0.02em;
+}
+.tab-btn.active{
+  background:var(--ink);color:white;
+}
+.tab-btn:hover:not(.active){color:var(--ink);}
+
+/* TAB CONTENT */
+.tab-section{display:none;padding:0 40px 80px;max-width:740px;margin:0 auto;}
+.tab-section.active{display:block;}
+
+/* ENTRY */
+.entry{padding:44px 0;border-bottom:1px solid var(--sep);}
+.entry:last-child{border-bottom:none;}
+.entry-date{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.entry-tag{display:inline-block;font-size:10px;font-weight:600;padding:3px 10px;border-radius:99px;margin-bottom:10px;letter-spacing:0.03em;}
+.entry-title{font-size:22px;font-weight:700;letter-spacing:-0.01em;color:var(--ink);line-height:1.2;margin-bottom:10px;}
+.entry-body{font-size:14px;color:var(--ink2);line-height:1.8;font-weight:300;}
+.entry-body p{margin-bottom:12px;}
+.entry-body p:last-child{margin-bottom:0;}
+.entry-body a{color:var(--orange);text-decoration:none;}
+.entry-body a:hover{text-decoration:underline;}
+
+/* CREDIT */
+.credit-note{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;color:var(--muted);
+  background:var(--surface2);padding:5px 12px;border-radius:99px;
+  border:1px solid var(--sep);margin-top:12px;
+}
+.credit-note strong{color:var(--ink2);font-weight:500;}
+
+/* PHOTO GRID */
+.photo-grid{display:grid;gap:8px;margin:20px 0;}
+.photo-grid.cols-2{grid-template-columns:1fr 1fr;}
+.photo-grid.cols-3{grid-template-columns:1fr 1fr 1fr;}
+.photo-wrap{border-radius:var(--r);overflow:hidden;border:1px solid var(--sep);background:#f0f0ee;}
+.photo-wrap.square img{aspect-ratio:1/1;width:100%;object-fit:cover;display:block;}
+.photo-wrap.wide img{aspect-ratio:16/9;width:100%;object-fit:cover;display:block;}
+.photo-caption{font-size:11px;color:var(--muted);margin-top:6px;text-align:center;font-style:italic;}
+
+/* SCREEN GRID */
+.screen-grid{display:grid;gap:10px;margin:20px 0;}
+.screen-grid.cols-2{grid-template-columns:1fr 1fr;}
+.screen-wrap{border-radius:var(--r);overflow:hidden;border:1px solid var(--sep);box-shadow:0 2px 12px rgba(0,0,0,0.06);}
+.screen-wrap img{width:100%;display:block;}
+
+/* TECH TAGS */
+.tech-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px;}
+.tech-tag{font-size:10px;font-weight:500;padding:3px 9px;border-radius:5px;border:1px solid var(--sep);color:var(--ink2);background:var(--surface);}
+
+/* STATUS */
+.status-bar{
+  display:flex;align-items:center;gap:8px;
+  padding:12px 16px;border-radius:var(--r);
+  margin-top:20px;font-size:12px;font-weight:500;
+}
+.status-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--sep);padding:20px 40px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted);}
+footer a{color:var(--orange);text-decoration:none;}
+
+@media(max-width:600px){
+  nav,.hero,.tab-wrap,.tab-section{padding-left:20px;padding-right:20px;}
+  .photo-grid.cols-3{grid-template-columns:1fr 1fr;}
+  .hero-title{font-size:28px;}
+  .screen-grid.cols-2{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-back">← Portfolio</a>
+  <span class="nav-title">AirBioCivic · Build Log</span>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Project Log · <a href="https://www.tamgulab.com/" target="_blank" style="color:var(--orange);text-decoration:none;">Tamgu Lab</a> · TC Columbia</div>
+  <h1 class="hero-title">AirBioCivic</h1>
+  <p class="hero-desc">Building a K–12 air quality learning system from scratch — sensor hardware, data platform, and SSI curriculum. This is the record of how it happened.</p>
+  <div class="hero-meta">
+    <div class="hmeta"><strong>Role:</strong> Tech Design Team Lead</div>
+    <div class="hmeta"><strong>Period:</strong> Oct 2025 – Present</div>
+    <div class="hmeta"><strong>Status:</strong> <span style="color:var(--green);">● Active</span></div>
+    <div class="hmeta"><strong>Launch target:</strong> Summer 2027</div>
+  </div>
+</div>
+
+<!-- TAB SWITCHER -->
+<div class="tab-wrap">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('sensor')">Sensor Design</button>
+    <button class="tab-btn" onclick="switchTab('platform')">Platform Design</button>
+  </div>
+</div>
+
+<!-- SENSOR TAB -->
+<div class="tab-section active" id="tab-sensor">
+
+  <div style="display:flex;align-items:center;gap:8px;padding:24px 0 4px;border-bottom:1px solid var(--sep);margin-bottom:0;">
+    <span style="font-size:11px;color:var(--muted);">Sensor case design in collaboration with</span>
+    <span style="font-size:11px;font-weight:600;color:var(--ink2);background:var(--surface2);padding:3px 10px;border-radius:99px;border:1px solid var(--sep);">Julia Ran Ju</span>
+  </div>
+
+  <div class="entry">
+    <div class="entry-date">Phase 00 · Jan 30, 2026</div>
+    <span class="entry-tag" style="background:#f5f5f0;color:var(--muted);">Prototype · Paper</span>
+    <h2 class="entry-title">Before anything else — paper and tape.</h2>
+    <div class="entry-body">
+      <p>The very first prototypes were paper. Prototype #1 and #2, both dated 01/30/26, both signed Julia · Jiin. We cut, folded, and taped paper cases directly around the PCB to understand the real dimensions — how tight the fit needed to be, where the ports would land, how the sensors needed to breathe.</p>
+      <p>Working on graph paper with handwritten dimension notes alongside, it's the kind of step that doesn't show up in final deliverables but shapes everything that comes after.</p>
+    </div>
+    <div class="photo-grid cols-2">
+      <div class="photo-wrap square"><img src="demo-paper1.jpg" alt="Paper prototypes #1 and #2 dated 01/30/26, signed Julia and Jiin"></div>
+      <div class="photo-wrap square"><img src="demo-paper2.jpg" alt="Paper case holding actual PCB board, graph paper with dimension sketches"></div>
+    </div>
+    <div class="credit-note">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1"/><path d="M6 4v3M6 8.5h.01" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
+      w/ <strong>Julia Ran Ju</strong>
+    </div>
+    <div class="tech-row">
+      <span class="tech-tag">Paper prototyping</span>
+      <span class="tech-tag">AirStory V1.0 PCB</span>
+      <span class="tech-tag">Dimension sketching</span>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-date">Phase 01 · Early 2025</div>
+    <span class="entry-tag" style="background:#f5f5f0;color:var(--muted);">Prototype · Foam</span>
+    <h2 class="entry-title">Starting with foam — figuring out the shape.</h2>
+    <div class="entry-body">
+      <p>Before any laser cutting or 3D printing, we needed to understand the physical constraints of the sensor board. We started by cutting foam by hand to prototype the case shape and test fitment — mapping panel dimensions (back, bottom, front, left, right) before committing to any permanent material.</p>
+      <p>The foam phase was about learning: how big does the case need to be? Where does the USB port sit? How much clearance does the PLANTOWER PM2.5 sensor need to breathe?</p>
+    </div>
+    <div class="photo-grid cols-3">
+      <div class="photo-wrap square"><img src="demo-foam1.jpg" alt="Foam pattern pieces laid flat"></div>
+      <div class="photo-wrap square"><img src="demo-foam2.jpg" alt="Foam case open showing PCB board"></div>
+      <div class="photo-wrap square"><img src="demo-foam3.jpg" alt="Assembled foam prototype"></div>
+    </div>
+    <div class="credit-note">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1"/><path d="M6 4v3M6 8.5h.01" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
+      w/ <strong>Julia Ran Ju</strong>
+    </div>
+    <div class="tech-row">
+      <span class="tech-tag">Foam prototyping</span>
+      <span class="tech-tag">PLANTOWER PM2.5</span>
+      <span class="tech-tag">AirStory V1.0 PCB</span>
+      <span class="tech-tag">ME2-CO sensor</span>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-date">Phase 02 · Winter 2025</div>
+    <span class="entry-tag" style="background:#eef4ff;color:var(--blue);">Laser Cut · Wood</span>
+    <h2 class="entry-title">Moving to wood — laser cut on Glowforge.</h2>
+    <div class="entry-body">
+      <p>Foam was too thick — the sensor openings and LED indicators couldn't sit where they needed to, and the tolerances were off. We moved to laser cutting on a Glowforge to get precision cuts and real fitment. Wood let us be exact about where each component surfaced: sensor intake, LED window, USB-C port.</p>
+      <p>This phase took a while. Getting the holes in the right place, the right size, the right depth — sensors need airflow, LEDs need to be visible, nothing can block anything else. Several iterations before it felt right.</p>
+    </div>
+    <div class="photo-grid cols-3">
+      <div class="photo-wrap square"><img src="demo-lasercut1.jpg" alt="Glowforge laser cutter"></div>
+      <div class="photo-wrap square"><img src="demo-lasercut2.jpg" alt="Laser cut wood panels"></div>
+      <div class="photo-wrap square"><img src="demo-lasercut3.jpg" alt="Assembled wood case"></div>
+    </div>
+    <div class="credit-note">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1"/><path d="M6 4v3M6 8.5h.01" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
+      w/ <strong>Julia Ran Ju</strong>
+    </div>
+    <div class="tech-row">
+      <span class="tech-tag">Glowforge</span>
+      <span class="tech-tag">Laser cutting</span>
+      <span class="tech-tag">Press-fit joinery</span>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-date">Phase 03 · Early 2026</div>
+    <span class="entry-tag" style="background:var(--green-bg);color:var(--green);">3D Print · Current Version</span>
+    <h2 class="entry-title">3D printed — the version we're going with.</h2>
+    <div class="entry-body">
+      <p>3D printing opened up design decisions that wood couldn't. Soft edges, clasp mechanisms, screw mounts — things that actually make a case feel intentional rather than constructed. The current version has proper fastening so the case stays closed in the field, and the edges won't snag or scratch.</p>
+      <p>Next step: finalizing the structure to be properly sturdy, and adding guidance directly onto the case — either printed stickers or engraved markings — so students can see where each component lives and what it does while they're collecting data. The inside should be readable, not mysterious.</p>
+    </div>
+    <div class="photo-grid cols-3">
+      <div class="photo-wrap square"><img src="demo-3dprint1.jpg" alt="3D printed white case with PCB inside"></div>
+      <div class="photo-wrap square"><img src="demo-3dprint2.jpg" alt="3D printed case side view"></div>
+      <div class="photo-wrap square"><img src="demo-3dprint3.jpg" alt="Assembled 3D printed sensor unit"></div>
+    </div>
+    <div class="credit-note">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1"/><path d="M6 4v3M6 8.5h.01" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
+      3D design & printing by <strong>Julia Ran Ju</strong>
+    </div>
+    <div class="tech-row">
+      <span class="tech-tag">3D printing · PLA</span>
+      <span class="tech-tag">CAD design</span>
+      <span class="tech-tag">USB-C</span>
+      <span class="tech-tag">Production-ready</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- PLATFORM TAB -->
+<div class="tab-section" id="tab-platform">
+
+  <div class="entry">
+    <div class="entry-date">Version 0.0 · 2025</div>
+    <span class="entry-tag" style="background:#fff0e8;color:var(--orange);">Medium Wireframe · MVP</span>
+    <h2 class="entry-title">Version 0.0 — features first, design later.</h2>
+    <div class="entry-body">
+      <p>Version 0.0 was a medium-fidelity wireframe thrown together to prove the data pipeline worked. PM2.5, CO, Temp, Humidity, trend charts, a Daily Reflection prompt — everything in, no UX thinking applied. No empty states, no design system, no user flow. The only question was: does the data show up?</p>
+      <p>It did. Ship it and move on.</p>
+    </div>
+    <div class="screen-grid cols-2">
+      <div class="screen-wrap"><img src="Version0_0-2.png" alt="V0 app - Air Quality home, PM2.5 13 μg/m³, Moderate badge, Daily Reflection prompt"></div>
+      <div class="screen-wrap"><img src="Version0_0-1.png" alt="V0 app - TAMGU Air 1.0 dashboard, PM2.5 trend chart"></div>
+    </div>
+    <div class="tech-row">
+      <span class="tech-tag">Mobile app</span>
+      <span class="tech-tag">PM2.5 · CO · Temp · Humidity</span>
+      <span class="tech-tag">SSI reflection prompts</span>
+      <span class="tech-tag">Real-time data</span>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-date">Version 1.0 · 2025</div>
+    <span class="entry-tag" style="background:#eef4ff;color:var(--blue);">Web + Mobile</span>
+    <h2 class="entry-title">Adding trends, calendar, and group structure.</h2>
+    <div class="entry-body">
+      <p>Version 1 introduced group-level organization — students belong to a school, class, period, and group. The dashboard now shows weekly trends and a monthly calendar view, letting students track change over time rather than just a single snapshot.</p>
+      <p>Station naming (MTN12 · Group 4), data download, and persistent group identity made this the first version that felt like a real classroom tool.</p>
+    </div>
+    <div class="screen-grid cols-2">
+      <div class="screen-wrap"><img src="Version1_0-1.png" alt="V1 - TAMGU Air 1.0, PM2.5 trend chart, April 2026 calendar"></div>
+      <div class="screen-wrap"><img src="Version1_0-2.png" alt="V1 - Air Quality home, Moderate badge, Daily Reflection"></div>
+    </div>
+    <div class="tech-row">
+      <span class="tech-tag">Group hierarchy</span>
+      <span class="tech-tag">Weekly trend chart</span>
+      <span class="tech-tag">Monthly calendar</span>
+      <span class="tech-tag">CSV download</span>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-date">Version 2.0 · 2026</div>
+    <span class="entry-tag" style="background:var(--green-bg);color:var(--green);">Full Web System · Live</span>
+    <h2 class="entry-title">AIR @TAMGU — the full platform.</h2>
+    <div class="entry-body">
+      <p>Version 2 is the current deployed system at <a href="https://haetalkim.github.io/tamguingAIR" target="_blank">haetalkim.github.io/tamguingAIR</a>. Built with React, Express, and PostgreSQL, connected to <a href="https://openaq.org" target="_blank">OpenAQ</a> for city-level reference data and Google Maps API for geospatial visualization.</p>
+      <p>Four main views: <strong>Heat Map</strong> (real-time air quality across Manhattan, color-coded by AQI), <strong>Raw Data</strong> (filterable by school/class/period/group, CSV export), <strong>Analysis</strong> (statistical dashboard with 7-day and 30-day trends), and <strong>My Page</strong> (student profile, group members, account settings).</p>
+      <p>Teacher-generated join codes let students register to a class. Role-based access separates instructor and student views.</p>
+      <p>Accessibility was built in from the start — color coding throughout the platform follows guidelines for visual accessibility, and the Heat Map includes a colorblind-friendly mode that can be toggled on. Data shouldn't be readable only by some students.</p>
+    </div>
+    <div class="screen-grid cols-2">
+      <div class="screen-wrap"><img src="version2_0-4.png" alt="V2 Heat Map - Manhattan PM2.5 stations, city average 13 μg/m³"></div>
+      <div class="screen-wrap"><img src="version2_0-3.png" alt="V2 Raw Data - filterable table with school/class/period/group hierarchy"></div>
+    </div>
+    <div class="screen-grid cols-2" style="margin-top:10px;">
+      <div class="screen-wrap"><img src="version2_0-2.png" alt="V2 Analysis - mean 15, median 17, min 3, max 27, weekly trend, distribution"></div>
+      <div class="screen-wrap"><img src="version2_0-1.png" alt="V2 My Page - student profile STU003, MTN12 Group 4, group members"></div>
+    </div>
+    <p class="photo-caption">Heat Map · Raw Data · Analysis · My Page</p>
+    <div class="tech-row">
+      <span class="tech-tag">React</span>
+      <span class="tech-tag">Express</span>
+      <span class="tech-tag">PostgreSQL</span>
+      <span class="tech-tag">OpenAQ API</span>
+      <span class="tech-tag">Google Maps API</span>
+      <span class="tech-tag">Role-based access</span>
+      <span class="tech-tag">CSV export</span>
+      <span class="tech-tag">Join code system</span>
+    </div>
+    <div class="status-bar" style="background:var(--green-bg);color:var(--green);">
+      <div class="status-dot" style="background:var(--green);"></div>
+      Live · App integration in progress · School launch target: Summer 2027
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-date">March 2026</div>
+    <span class="entry-tag" style="background:#fff0e8;color:var(--orange);">UX Audit</span>
+    <h2 class="entry-title">Before the next version — a structured audit.</h2>
+    <div class="entry-body">
+      <p>Before moving to the next iteration, we ran a structured UX audit of the current platform — evaluating 4 screens and 3 operational guides from both teacher and student perspectives. The goal: find what's broken before real students use it.</p>
+      <p><strong>4 High severity issues:</strong> No direct data input for students (CSV only — unrealistic for K-12 field collection). No empty state on first login — blank charts look broken. Session creation buried — teachers can't find it on day one. Numbers shown without AQI context — PM2.5 = 18 means nothing without a "Good / Moderate / Unhealthy" badge.</p>
+      <p><strong>3 Medium issues:</strong> Raw Data defaults to all groups. Join Code UI ambiguous. Heat Map MODE toggle unlabeled.</p>
+      <p>The audit also mapped the platform against the Instructor Curriculum Guide as a "living pair" — where disconnected, both needed to update together. These findings are now feeding directly into the next build cycle.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0;">
+      <div style="padding:14px 16px;background:var(--surface);border:1px solid var(--sep);border-radius:var(--r);border:1.5px solid #e03030;">
+        <div style="font-size:9px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#e03030;margin-bottom:8px;">High Priority</div>
+        <div style="font-size:12px;color:var(--ink2);line-height:1.6;font-weight:300;">No student data input form<br>No empty state on first login<br>Session creation not surfaced<br>No AQI context on stat numbers</div>
+      </div>
+      <div style="padding:14px 16px;background:var(--surface);border:1px solid var(--sep);border-radius:var(--r);border:1.5px solid var(--orange);">
+        <div style="font-size:9px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--orange);margin-bottom:8px;">Medium Priority</div>
+        <div style="font-size:12px;color:var(--ink2);line-height:1.6;font-weight:300;">Raw Data defaults to all groups<br>Join Code UI ambiguous<br>Heat Map MODE toggle unlabeled</div>
+      </div>
+    </div>
+    <div class="tech-row">
+      <span class="tech-tag">UX Audit</span>
+      <span class="tech-tag">4 screens · 3 guides reviewed</span>
+      <span class="tech-tag">Teacher + student flows</span>
+      <span class="tech-tag">Platform–curriculum pair analysis</span>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-date">Version 3.0 · 2026</div>
+    <span class="entry-tag" style="background:var(--green-bg);color:var(--green);">Audit → Rebuild · Current</span>
+    <h2 class="entry-title">Version 3 — the audit actually did something.</h2>
+    <div class="entry-body">
+      <p>Version 3 is the direct response to the UX audit. Almost everything flagged as high priority got addressed: proper login flow with Student / Teacher portal separation, Manage Classes for teachers (Join Code generation, class structure setup), Analysis now shows your data against OpenAQ reference location — so students can actually compare their measurements to a real baseline. Raw Data now has real field measurements in it (Morningside Park, March 2026).</p>
+      <p>The platform also now properly surfaces the three-tier comparison in Heat Map: City Average, School Average, and Group Average side by side — the core of what makes SSI inquiry possible.</p>
+    </div>
+    <div class="screen-grid cols-2">
+      <div class="screen-wrap"><img src="Version3_0-1.png" alt="V3 Login - ABC landing page with Student Access / Teacher Portal toggle, Student Login form"></div>
+      <div class="screen-wrap"><img src="Version3_0-6.png" alt="V3 Teacher view - Manage Classes, Join Code PGKU9, class structure, student groups P1 G1/G2"></div>
+    </div>
+    <div class="screen-grid cols-2" style="margin-top:10px;">
+      <div class="screen-wrap"><img src="Version3_0-4.png" alt="V3 Student Heat Map - Manhattan Air Quality, City Average 10 Good, School Average 19, Group No Data"></div>
+      <div class="screen-wrap"><img src="Version3_0-3.png" alt="V3 Raw Data - Morningside Park measurements, G4 filter, 3 records shown"></div>
+    </div>
+    <div class="screen-grid cols-2" style="margin-top:10px;">
+      <div class="screen-wrap"><img src="Version3_0-5.png" alt="V3 Analysis - CO stats, Your recent week vs reference location, OpenAQ Fort Lee Near Road"></div>
+      <div class="screen-wrap"><img src="Version3_0-2.png" alt="V3 My Page - STU003, MTN12 Group 1, account settings"></div>
+    </div>
+    <p class="photo-caption">Login · Teacher Portal · Heat Map · Raw Data · Analysis · My Page</p>
+    <div class="tech-row">
+      <span class="tech-tag">Audit-driven rebuild</span>
+      <span class="tech-tag">Student / Teacher portal split</span>
+      <span class="tech-tag">OpenAQ reference comparison</span>
+      <span class="tech-tag">Real field data</span>
+      <span class="tech-tag">3-tier heat map</span>
+      <span class="tech-tag">Join Code UX fixed</span>
+    </div>
+    <div class="status-bar" style="background:var(--green-bg);color:var(--green);">
+      <div class="status-dot" style="background:var(--green);"></div>
+      Current deployed version · App integration in progress · School launch target: Summer 2027
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-date">Next</div>
+    <span class="entry-tag" style="background:#f5f5f0;color:var(--muted);">Roadmap</span>
+    <h2 class="entry-title">Mobile app → sensor sync → school launch.</h2>
+    <div class="entry-body">
+      <p>The mobile app is currently in development. Once complete, students will connect directly to the sensor via the app — replacing the current CSV upload flow with real-time wireless data transmission. No laptop needed in the field.</p>
+      <p>A school launch is planned for Summer 2027 with a contracted partner school. The curriculum guide (Student Guide + Teacher Guide) is written and iterated. The hardware is ready. The platform is live.</p>
+    </div>
+    <div class="tech-row">
+      <span class="tech-tag">Mobile app · In development</span>
+      <span class="tech-tag">Wireless sensor sync</span>
+      <span class="tech-tag">School partnership</span>
+      <span class="tech-tag">Launch: Summer 2027</span>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span>Jiin Hur · <a href="https://www.tamgulab.com/" target="_blank">Tamgu Lab</a> · TC Columbia · 2025–2026</span>
+  <a href="../index.html">← Back to portfolio</a>
+</footer>
+
+<script>
+function switchTab(name) {
+  document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
